@@ -2,33 +2,48 @@ import React from 'react';
 import whatsAppIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
+import { api } from '../../services/api';
+export interface Teacher {
+  id: string;
+  user_id: string;
+  subject: string;
+  cost: string;
+  name: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+interface TeacherItemProps {
+  teacher : Teacher;
+}
 
-const TeacherItem: React.FC = () => {
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
+  function createNewConnection() {
+    api.post('connections', {user_id: teacher.user_id})
+  }
   return (
   <article className="teacher-item">
     <header>
-      <img src="https://avatars2.githubusercontent.com/u/15224426?s=460&u=b4111459e61d191e7b2aad2404b69be157bc6baf&v=4" alt="Marcos Taborda"/>
+      <img src={teacher.avatar} alt="Marcos Taborda"/>
       <div>
-        <strong>Marcos Taborda</strong>
-        <span>Química</span>
+        <strong>{teacher.name}</strong>
+        <span>{teacher.subject}</span>
       </div>
     </header>
     <p>
-      Entusiasta das melhores tecnologias de química avançada.
-      <br/> <br/>
-      Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências.
+      {teacher.bio}
     </p>
     <footer>
       <p>
         Preço/hora
         <strong>
-          R$ 80,00
+          R$ {teacher.cost}
         </strong>
       </p>
-      <button type="button">
+      <a onClick={createNewConnection} href={`http://wa.me/${teacher.whatsapp}`} rel="noopener noreferrer" target="_blank">
         <img src={whatsAppIcon} alt="Whats App"/>
         Entrar em contato
-      </button>
+      </a>
     </footer>
   </article>
 );
