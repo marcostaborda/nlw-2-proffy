@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, ScrollView, Text, TextInput } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
@@ -8,6 +8,7 @@ import styles from "./styles";
 import PageHeaders from "../../components/PageHeaders";
 import TeacherItem, { Teacher } from "../../components/TeacherItem";
 import api from "../../services/api";
+import { useFocusEffect } from "@react-navigation/native";
 
 const TeacherList: React.FC = () => {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -30,6 +31,11 @@ const TeacherList: React.FC = () => {
       }
     });
   }
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites();
+    }, [])
+  );
   function handleToggleFilter() {
     setIsFiltersVisible(!isFiltersVisible);
   }
